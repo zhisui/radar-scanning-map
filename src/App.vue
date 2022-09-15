@@ -1,5 +1,5 @@
 <template>
-    <!-- <router-view/> -->
+     <!-- <router-view/> -->
     <baidu-map></baidu-map>
 </template>
 

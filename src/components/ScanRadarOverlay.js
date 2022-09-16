@@ -1,4 +1,5 @@
 import { ScanRadarLayer } from './ScanRadarLayer'
+import {ComplexCustomOverlay} from './ComplexCustomOverlay'
 // eslint-disable-next-line no-undef
 export class ScanRadarOverlay  {
 	_isVisible = false
@@ -20,24 +21,10 @@ export class ScanRadarOverlay  {
 			},
 			this.bMap
 		)
-
-		function ComplexCustomOverlay(point) {
-			this._point = point
-		}
-// eslint-disable-next-line no-undef
-		ComplexCustomOverlay.prototype = new BMap.Overlay()
-		ComplexCustomOverlay.prototype.initialize = function(map) {
-			this._map = map
-			var div = (this._div = this._scanRadarLayer1.frame())
-			this._bMap.getPanes().labelPane.appendChild(div)
-			return div
-		}
-		ComplexCustomOverlay.prototype.draw = function() {}
 		this._myCompOverlay = new ComplexCustomOverlay(
       // eslint-disable-next-line no-undef
-			new BMap.Point(this.x, this.y)
+			new BMap.Point(this.x, this.y),this.bMap
 		)
-		//myCompOverlay.pointType="radar";
 		console.log(this._myCompOverlay, 111111)
 		this.bMap.addOverlay(this._myCompOverlay)
 
@@ -52,17 +39,18 @@ export class ScanRadarOverlay  {
 	_overlayDraw() {
 		if (this._isVisible) {
 			let map = this._myCompOverlay._map
-			var pixel = map.pointToOverlayPixel(this._myCompOverlay._point)
+			let pixel = map.pointToOverlayPixel(this._myCompOverlay.point)
 			this._myCompOverlay._div.style.left =
 				pixel.x - this._valueByRealDistance + 'px'
 			this._myCompOverlay._div.style.top =
 				pixel.y - this._valueByRealDistance + 'px'
+				this._myCompOverlay._div.style.backgroundColor = 'red'
 		}
 	}
 
 	_reDrawScan() {
 		if (this._isVisible) {
-			let scanFm = this.scanRadarLayer1.frame()
+			let scanFm = this._scanRadarLayer1.frame()
 			if (null == this._valueByRealDistance) {
 				scanFm.style.display = 'none'
 				return
@@ -76,7 +64,7 @@ export class ScanRadarOverlay  {
 			$(this._scanRadarLayer1.frame())
 				.find('div')
 				.remove()
-			if (this._bMap.getZoom() == 13 && this._datatime) {
+			if (this.bMap.getZoom() == 13 && this._datatime) {
 				const startTime = this._datatime.split('~')[0]
 				const endTime = this._datatime.split('~')[1]
 				var html =

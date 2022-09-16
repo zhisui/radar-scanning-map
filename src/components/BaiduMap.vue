@@ -75495,7 +75495,6 @@ import {ScanRadarOverlay} from './ScanRadarOverlay'
 export default {
   data() {
     return {
-
     }
   },
   mounted() {
@@ -75520,7 +75519,7 @@ export default {
       map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放;
       // eslint-disable-next-line no-undef
       map.addControl(new BMap.ScaleControl());
-      const scanRadarOverlay = new ScanRadarOverlay(120, 30, null, 0,);
+      const scanRadarOverlay = new ScanRadarOverlay(120, 30, null, 0,map);
       scanRadarOverlay.init()
       console.log(scanRadarOverlay,'scanRadarOverlay')
       scanRadarOverlay.setData(data);

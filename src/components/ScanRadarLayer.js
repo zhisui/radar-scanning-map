@@ -58,7 +58,7 @@ export class ScanRadarLayer {
 
     _startDegree // 起始角度
     _stepDegrees = 2; // 单次扫描角度(暂定);
-    _scanStep = 180 - (parseInt(this._startDegree) / 2); // 扫描步骤数(暂定);
+
         //var stepDegrees = 360 / scanStep; // 单次扫描角度(暂定);
     _cycleData; //数据
     _colorData; //颜色数据
@@ -75,6 +75,7 @@ export class ScanRadarLayer {
         this._ctx = this._scanRadarCanvas.getContext("2d");
         canvasFm.appendChild(this._scanRadarCanvas);
         this._canvasFm = canvasFm
+        return this._canvasFm
     }
 
     // 设置透明度
@@ -186,13 +187,27 @@ export class ScanRadarLayer {
             return this._getIndex(data, midle, end);
         }
     }
+    _drawStep () {
+        this._scanStep = 180 - (parseInt(this._startDegree) / 2); // 扫描步骤数(暂定);
+        console.log(this._curStep,'_curStep')
+        console.log(this._scanStep,'this._scanStep')
+
+        if (this._curStep >= this._scanStep) {
+            console.log('测试一下')
+            this._ctx.closePath();
+            window.clearInterval(this._drawStep);
+            return;
+        }
+        this._doDrawStep(this._curStep);
+        this._curStep++;
+    }
 
     _doDrawStep (step) {
-        this._startDegree=this.o.degree
+        this._startDegree = this.o.degree
         let beginDegrees = this._startDegree + step * this._stepDegrees - 90;
         let endDegrees = beginDegrees + this._stepDegrees;
-        let beginRads = this.getRads(beginDegrees);
-        let endRads = this.getRads(endDegrees);
+        let beginRads = this._getRads(beginDegrees);
+        let endRads = this._getRads(endDegrees);
         let oneStep = this._keyAry[1] * 1000;
         if (this._colorData && this._colorData.length > 0) {
             for (var i = 0; i <= this._p; i++) {
@@ -206,49 +221,16 @@ export class ScanRadarLayer {
                     this._ctx.strokeStyle = this._colorData[this._curStep][i];
                 }
                 this._ctx.save();
-                this._ctx.arc(this._offsetR , this._offsetR , this._GetPiexValueByRealDistance((i * oneStep) * Math.cos(2 * Math.PI / 360 * 25)), beginRads, endRads);
+                this._ctx.arc(this._offsetR, this._offsetR, this._GetPiexValueByRealDistance((i * oneStep) * Math.cos(2 * Math.PI / 360 * 25)), beginRads, endRads);
                 this._ctx.stroke();
                 this._ctx.restore();
             }
         }
     }
-    _drawStep () {
-        if (this._curStep >= this._scanStep) {
-            this._ctx.closePath();
-            window.clearInterval(this._drawStep);
-            return;
-        }
-        this._doDrawStep(this._curStep);
-        this._curStep++;
-    }
-
     draw(){
-        window.clearInterval(this._drawStep);
+        clearInterval(this._drawStep);
         this._curStep = 0;
-        window.setInterval(this._drawStep, 1);
-        //ctx.fillText(o.datatime,W/2-100,10);
+        setInterval(() => {this._drawStep()}, 1);
     }
-    // initialize(map) {
-    //   this._map = map;
-    //   const template = `<div class="radar-box">
-    //       <div class="radar">
-    //         <div class="ripple"></div>
-    //         <div class="ripple"></div>
-    //         <div class="ripple"></div>
-    //       </div>
-    //     </div>`;
-    //   const divFragment = document.createRange().createContextualFragment(template);
-    //   const div = divFragment.querySelectorAll('.radar-box')[0];
-    //   console.log(div,'div')
-    //   map.getPanes().markerPane.appendChild(div);
-    //   this._div = div;
-    //   return div;
-    // }
 
-    // draw() {
-    //   // 根据地理坐标转换为像素坐标，并设置给容器
-    //   const position = this._map.pointToOverlayPixel(this.point);
-    //   this._div.style.left = `${position.x - this.size / 2}px`;
-    //   this._div.style.top = `${position.y - this.size / 2}px`;
-    // }
   }

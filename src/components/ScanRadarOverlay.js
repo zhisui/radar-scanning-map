@@ -3,7 +3,7 @@ import {ComplexCustomOverlay} from './ComplexCustomOverlay'
 // eslint-disable-next-line no-undef
 export class ScanRadarOverlay  {
 	_isVisible = false
-	_valueByRealDistance
+	_valueByRealDistance = 0
 	constructor(x, y, datatime, degree, bMap) {
 		this.x = x
 		this.y = y
@@ -30,7 +30,7 @@ export class ScanRadarOverlay  {
 
 		this.bMap.addEventListener('zoomstart', function() {})
 		this.bMap.addEventListener('zoomend', function() {
-			this._valueByRealDistance = this.GetPiexValueByRealDistance(5000)
+			this._valueByRealDistance = this._GetPiexValueByRealDistance(5000)
 			this._overlayDraw()
 			this._reDrawScan()
 		})
@@ -58,8 +58,10 @@ export class ScanRadarOverlay  {
 				scanFm.style.display = ''
 			}
 			this._scanRadarLayer1.setRadius(this._valueByRealDistance)
+			console.log(this._valueByRealDistance,'this._valueByRealDistance')
 			this._scanRadarLayer1.frame().style.filter =
 				'blur(' + this._valueByRealDistance / 1000 + 'px)'
+				console.log(this._scanRadarLayer1.frame().style.filter,'this._scanRadarLayer1.frame()')
         // eslint-disable-next-line no-undef
 			$(this._scanRadarLayer1.frame())
 				.find('div')

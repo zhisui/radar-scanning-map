@@ -102,7 +102,7 @@ export class ScanRadarLayer {
     }
 
     getWidth() {
-        return this.canvasFm.clientWidth;
+        return this._canvasFm.clientWidth;
     }
 
     setData(data) {
@@ -144,6 +144,7 @@ export class ScanRadarLayer {
         this._scanRadarCanvas.width = this._W;
         this._ctx.lineWidth = this._rStep * 2;
         this._ctx.save();
+        console.log(this._canvasFm,'执行没有')
     }
     clear() {
     }
@@ -189,11 +190,7 @@ export class ScanRadarLayer {
     }
     _drawStep () {
         this._scanStep = 180 - (parseInt(this._startDegree) / 2); // 扫描步骤数(暂定);
-        console.log(this._curStep,'_curStep')
-        console.log(this._scanStep,'this._scanStep')
-
         if (this._curStep >= this._scanStep) {
-            console.log('测试一下')
             this._ctx.closePath();
             window.clearInterval(this._drawStep);
             return;
@@ -228,9 +225,9 @@ export class ScanRadarLayer {
         }
     }
     draw(){
-        clearInterval(this._drawStep);
-        this._curStep = 0;
-        setInterval(() => {this._drawStep()}, 1);
+        clearInterval(this._drawStep)
+        this._curStep = 0
+        setInterval(() => {this._drawStep()}, 1)
     }
 
   }

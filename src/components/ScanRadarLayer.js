@@ -43,7 +43,7 @@ export const radarDataRange = [0, 0.003, 0.006, 0.009, 0.013, 0.016, 0.019, 0.02
     0.944, 0.947, 0.95, 0.953, 0.956, 0.959, 0.962, 0.966, 0.969, 0.972, 0.975, 0.978, 0.981, 0.984, 0.987, 0.991, 0.994, 0.997, 1
 ]
 export class ScanRadarLayer {
-    _defaultRadius = 1000; // 默认半径;
+    _defaultRadius = 350; // 默认半径;
     _defaultOpacity = 95; // 缺省透明度;
     _canvasFm
     _scanRadarCanvas
@@ -68,6 +68,13 @@ export class ScanRadarLayer {
       this.o= o;
       this.bMap = bMap
     }
+
+    init() {
+        this.frame()
+        this.setOpacity()
+        this.setRadius()
+        return this._canvasFm
+    }
     frame() {
         const canvasFm = document.createElement("div");
         canvasFm.style.position = "absolute";
@@ -75,7 +82,6 @@ export class ScanRadarLayer {
         this._ctx = this._scanRadarCanvas.getContext("2d");
         canvasFm.appendChild(this._scanRadarCanvas);
         this._canvasFm = canvasFm
-        return this._canvasFm
     }
 
     // 设置透明度
@@ -144,7 +150,6 @@ export class ScanRadarLayer {
         this._scanRadarCanvas.width = this._W;
         this._ctx.lineWidth = this._rStep * 2;
         this._ctx.save();
-        console.log(this._canvasFm,'执行没有')
     }
     clear() {
     }

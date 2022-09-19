@@ -27,12 +27,12 @@ export class ScanRadarOverlay  {
 		)
 		console.log(this._myCompOverlay, 111111)
 		this.bMap.addOverlay(this._myCompOverlay)
-
+        let that = this
 		this.bMap.addEventListener('zoomstart', function() {})
 		this.bMap.addEventListener('zoomend', function() {
-			this._valueByRealDistance = this._GetPiexValueByRealDistance(5000)
-			this._overlayDraw()
-			this._reDrawScan()
+			that._valueByRealDistance = that._GetPiexValueByRealDistance(5000)
+			that._overlayDraw()
+			that._reDrawScan()
 		})
 	}
 
@@ -44,26 +44,25 @@ export class ScanRadarOverlay  {
 				pixel.x - this._valueByRealDistance + 'px'
 			this._myCompOverlay._div.style.top =
 				pixel.y - this._valueByRealDistance + 'px'
-				this._myCompOverlay._div.style.backgroundColor = 'red'
+				this._myCompOverlay._div.style.backgroundColor = 'lightblue'
 		}
 	}
 
 	_reDrawScan() {
 		if (this._isVisible) {
-			let scanFm = this._scanRadarLayer1.frame()
+			let scanFm = this._scanRadarLayer1.init()
 			if (null == this._valueByRealDistance) {
 				scanFm.style.display = 'none'
 				return
 			} else {
 				scanFm.style.display = ''
 			}
-			this._scanRadarLayer1.setRadius(this._valueByRealDistance)
-			console.log(this._valueByRealDistance,'this._valueByRealDistance')
-			this._scanRadarLayer1.frame().style.filter =
+			this._scanRadarLayer1.init()
+			this._myCompOverlay._div.style.filter =
 				'blur(' + this._valueByRealDistance / 1000 + 'px)'
-				console.log(this._scanRadarLayer1.frame().style.filter,'this._scanRadarLayer1.frame()')
+				console.log(this._myCompOverlay._div,'this._myCompOverlay._div')
         // eslint-disable-next-line no-undef
-			$(this._scanRadarLayer1.frame())
+			$(this._scanRadarLayer1.init())
 				.find('div')
 				.remove()
 			if (this.bMap.getZoom() == 13 && this._datatime) {
@@ -76,7 +75,7 @@ export class ScanRadarOverlay  {
 					endTime +
 					'</div></div>'
           // eslint-disable-next-line no-undef
-				$(this._scanRadarLayer1.frame()).append(html)
+				$(this._scanRadarLayer1.init()).append(html)
 			}
 			this._scanRadarLayer1.draw()
 		}
@@ -103,14 +102,14 @@ export class ScanRadarOverlay  {
 	show() {
 		//$(".raderTime").remove();
 		this._isVisible = true
-		this._scanRadarLayer1.frame().style.display = ''
+		this._scanRadarLayer1.init().style.display = ''
 		this._valueByRealDistance = this._GetPiexValueByRealDistance(5000)
 		this._overlayDraw()
 		this._reDrawScan()
 	}
 	hide() {
 		this._isVisible = false
-		this._scanRadarLayer1.frame().style.display = 'none'
+		this._scanRadarLayer1.init().style.display = 'none'
 	}
 	remove() {
 		this._isVisible = false

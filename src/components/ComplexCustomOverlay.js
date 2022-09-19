@@ -15,16 +15,14 @@ export class ComplexCustomOverlay extends BMap.Overlay {
             datatime: this.datatime,
             degree: this.degree,
         },
-        this.bMap
+        this.bMap,
     )
     console.log(this._scanRadarLayer1,'this._scanRadarLayer1')
-      let div = this._div = this._scanRadarLayer1.frame()
+      let div = this._div = this._scanRadarLayer1.init()
       this.bMap.getPanes().labelPane.appendChild(div)
       this._div = div;
       return div;
     }
-
     draw() {
-
     }
   }

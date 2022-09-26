@@ -23,11 +23,11 @@ export class ScanRadarOverlay  {
 		)
 		this._myCompOverlay = new ComplexCustomOverlay(
       // eslint-disable-next-line no-undef
-			new BMap.Point(this.x, this.y),this.bMap
+			new BMap.Point(this.x, this.y),this.bMap,this._scanRadarLayer1
 		)
 		console.log(this._myCompOverlay, 111111)
 		this.bMap.addOverlay(this._myCompOverlay)
-        let that = this
+    let that = this
 		this.bMap.addEventListener('zoomstart', function() {})
 		this.bMap.addEventListener('zoomend', function() {
 			that._valueByRealDistance = that._GetPiexValueByRealDistance(5000)

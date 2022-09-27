@@ -9,7 +9,7 @@ export class ComplexCustomOverlay extends BMap.Overlay {
 
     initialize(map) {
       this._map = map;
-      let div = this._div = this.scanRadarLayer.init()
+      let div = this._div = this.scanRadarLayer.frame()
       this.bMap.getPanes().labelPane.appendChild(div)
       this._div = div;
       return div;

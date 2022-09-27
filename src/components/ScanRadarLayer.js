@@ -69,12 +69,6 @@ export class ScanRadarLayer {
       this.bMap = bMap
     }
 
-    init() {
-        this.frame()
-        this.setOpacity()
-        this.setRadius()
-        return this._canvasFm
-    }
     frame() {
         const canvasFm = document.createElement("div");
         canvasFm.style.position = "absolute";
@@ -82,21 +76,24 @@ export class ScanRadarLayer {
         this._ctx = this._scanRadarCanvas.getContext("2d");
         canvasFm.appendChild(this._scanRadarCanvas);
         this._canvasFm = canvasFm
+        return this._canvasFm
     }
 
     // 设置透明度
     setOpacity (op) {
-        let opacity = this._defaultRadius; // 透明度;
+        console.log(op,'op是什么')
+        let opacity = this._defaultOpacity; // 透明度;
         if (op >= 1 && op <= 100) {
             opacity = op;
         } else {
-            opacity = this._defaultRadius;
+            opacity = this._defaultOpacity;
         }
 
         let moz_o = opacity / 100;
         if (this._canvasFm.style.opacity !== undefined) {
             this._canvasFm.style.opacity = moz_o;
         }
+        console.log(moz_o,'moz_o;')
         if (this._canvasFm.style.MozOpacity !== undefined) {
             this._p.style.MozOpacity = moz_o;
         }
@@ -135,7 +132,7 @@ export class ScanRadarLayer {
     }
 
     setRadius(radius) {
-        var _radius = parseInt(radius, 10);
+        let _radius = parseInt(radius, 10);
         _radius = isNaN(_radius) ? this._defaultRadius : _radius;
         this._R = _radius < 1 ? this._defaultRadius : _radius;
         this._rStep = this._R  / this._p; //半径/分辨率 = 步长
@@ -144,6 +141,7 @@ export class ScanRadarLayer {
         this._H = this._offsetR  * 2;
         this._W = this._offsetR  * 2;
 
+        console.log(this._H,'this._H')
         this._canvasFm.style.height = (this._H + 50) + "px";
         this._canvasFm.style.width = this._W + "px";
         this._scanRadarCanvas.height = this._H;

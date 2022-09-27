@@ -15,7 +15,6 @@ export class ScanRadarOverlay  {
 	init() {
 		this._scanRadarLayer1 = new ScanRadarLayer(
 			{
-				opacity: 70,
 				datatime: this.datatime,
 				degree: this.degree,
 			},
@@ -50,19 +49,19 @@ export class ScanRadarOverlay  {
 
 	_reDrawScan() {
 		if (this._isVisible) {
-			let scanFm = this._scanRadarLayer1.init()
+			let scanFm = this._scanRadarLayer1.frame()
 			if (null == this._valueByRealDistance) {
 				scanFm.style.display = 'none'
 				return
 			} else {
 				scanFm.style.display = ''
 			}
-			this._scanRadarLayer1.init()
+			this._scanRadarLayer1.setOpacity(70)
+			this._scanRadarLayer1.setRadius(this._valueByRealDistance,scanFm)
 			this._myCompOverlay._div.style.filter =
 				'blur(' + this._valueByRealDistance / 1000 + 'px)'
-				console.log(this._myCompOverlay._div,'this._myCompOverlay._div')
         // eslint-disable-next-line no-undef
-			$(this._scanRadarLayer1.init())
+			$(this._scanRadarLayer1.frame())
 				.find('div')
 				.remove()
 			if (this.bMap.getZoom() == 13 && this._datatime) {
@@ -102,14 +101,14 @@ export class ScanRadarOverlay  {
 	show() {
 		//$(".raderTime").remove();
 		this._isVisible = true
-		this._scanRadarLayer1.init().style.display = ''
+		this._scanRadarLayer1.frame().style.display = ''
 		this._valueByRealDistance = this._GetPiexValueByRealDistance(5000)
 		this._overlayDraw()
 		this._reDrawScan()
 	}
 	hide() {
 		this._isVisible = false
-		this._scanRadarLayer1.init().style.display = 'none'
+		this._scanRadarLayer1.frame().style.display = 'none'
 	}
 	remove() {
 		this._isVisible = false
